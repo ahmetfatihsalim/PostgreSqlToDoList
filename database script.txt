@@ -1,0 +1,58 @@
+CREATE DATABASE "BasicToDoList"
+    WITH
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'Turkish_Turkey.1254'
+    LC_CTYPE = 'Turkish_Turkey.1254'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1
+    IS_TEMPLATE = False;
+
+CREATE TABLE IF NOT EXISTS public.category
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    createddate timestamp without time zone NOT NULL,
+    modifieddate timestamp without time zone NOT NULL,
+    nameof name COLLATE pg_catalog."default" NOT NULL,
+    isdeleted boolean NOT NULL,
+    CONSTRAINT category_pkey PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.category
+    OWNER to postgres;
+
+CREATE TABLE IF NOT EXISTS public.task
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    startdate timestamp without time zone NOT NULL,
+    enddate timestamp without time zone NOT NULL,
+    urgency integer NOT NULL,
+    categoryid integer NOT NULL,
+    createddate timestamp without time zone NOT NULL,
+    modifieddate timestamp without time zone NOT NULL,
+    nameof text COLLATE pg_catalog."default" NOT NULL,
+    isdeleted boolean NOT NULL,
+    done boolean NOT NULL,
+    contentof text COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT task_pkey PRIMARY KEY (id),
+    CONSTRAINT "taskCategory_fk" FOREIGN KEY (categoryid)
+        REFERENCES public.category (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.task
+    OWNER to postgres;
+-- Index: fki_taskCategory_fk
+
+-- DROP INDEX IF EXISTS public."fki_taskCategory_fk";
+
+CREATE INDEX IF NOT EXISTS "fki_taskCategory_fk"
+    ON public.task USING btree
+    (categoryid ASC NULLS LAST)
+    TABLESPACE pg_default;
