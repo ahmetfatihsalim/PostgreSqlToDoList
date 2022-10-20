@@ -1,0 +1,85 @@
+﻿@using MVC.ViewModel
+@model HomeViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>To Do List Application</title>
+    <title>Index</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-glyphicon.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+
+        @Html.ActionLink("Add New Task", "CreateNewTask", new { @type = "button" }, new { @class = "btn btn-success" })
+
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <a class="btn btn-light" href="#">Categories</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-light">@Html.ActionLink("All", "GetAllTasks")&nbsp;&nbsp;&nbsp;|&nbsp;</button>
+                    </li>
+                    @foreach (var item in Model.CategoryList)
+                    {
+                        <li class="nav-item">
+                            <button type="button" class="btn btn-light">@Html.ActionLink(item.Name, "Index", new { id = item.Id })&nbsp;&nbsp;@Html.ActionLink(" ", "EditCategory", "Home", new { id = item.Id }, new { @class = "glyphicon-pencil" })&nbsp;</button>
+                        </li>
+                    }
+                    <li>
+                        <button type="button" class="btn btn-light">@Html.ActionLink("Add New Category", "CreateNewCategory")</button>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <hr />
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Starting Date</th>
+                    <th scope="col">Ending Date</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Content</th>
+                    <th scope="col">Urgency</th>
+                    <th scope="col">Done</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.TaskList)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.StartDate.ToString("g")</td>
+                        <td>@item.EndDate.ToString("g")</td>
+                        <td>@item.CategoryName</td>
+                        <td>@item.Name</td>
+                        <td>@item.Content</td>
+                        <td>@item.Urgency</td>
+                        <td readonly> <input style="color:#005CC8;" type="checkbox" checked="@item.Done" onclick="this.checked=!this.checked;" /> </td><!-- @item.Done tik olması lazım-->
+                        <td>
+                            @Html.ActionLink("Edit", "EditTask", new { id = item.Id }) |
+                            @Html.ActionLink("Delete", "DeleteTask", new { id = item.Id })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</body>
+</html>

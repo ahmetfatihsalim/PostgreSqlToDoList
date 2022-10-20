@@ -1,0 +1,45 @@
+﻿@using MVC.ViewModel
+@model HomeViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>CreateNewCategory</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-glyphicon.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        @using (Html.BeginForm())
+        {
+            <form>
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            @Html.TextBoxFor(model => model.Category.Name, new { @class = "form-control", @id = "name", @autocomplete = "off" })
+                        </div>
+                    </div>
+                </div>
+                @if (Model != null && Model.Error != "")
+                {
+                    <div class="alert alert-primary" role="alert">
+                        @Model.Error
+                    </div>
+                }
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        }
+
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    </div>
+</body>
+</html>

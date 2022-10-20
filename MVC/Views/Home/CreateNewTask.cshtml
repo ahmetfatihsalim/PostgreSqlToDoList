@@ -1,0 +1,68 @@
+﻿@using MVC.ViewModel
+@model HomeViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create New Task</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        @using (Html.BeginForm())
+        {
+            <form>
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            @Html.TextBoxFor(model => model.Task.Name, new { @class = "form-control", @id = "name", @autocomplete = "off" })
+                        </div>
+                        <div class="form-group">
+                            <label for="content">Content</label>
+                            @Html.TextBoxFor(model => model.Task.Content, new { @class = "form-control", placeholder = "Enter the content of your task here", @id = "content", @autocomplete = "off" })
+                        </div>
+                        <div class="form-group">
+                            <label for="startDate">Starting Date</label>
+                            @Html.TextBoxFor(model => model.Task.StartDate, new { @class = "form-control", @id = "startDate", @type = "datetime-local" })
+                        </div>
+                        <div class="form-group">
+                            <label for="endDate">Ending Date</label>
+                            @Html.TextBoxFor(model => model.Task.EndDate, new { @class = "form-control", @id = "endDate", @type = "datetime-local" })
+                        </div>
+                        <div class="form-group">
+                            <label for="urgency">Urgency</label>
+                            @Html.EnumDropDownListFor(model => model.Task.Urgency, "Enter the urgency level here", new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            @Html.DropDownListFor(model => model.Task.CategoryId, (IEnumerable<SelectListItem>)ViewBag.categoryList, "Select Category", new { @class = "form-control", @id = "category" })
+                        </div>
+                        <div class="form-check">
+                            @Html.CheckBoxFor(model => model.Task.Done, new { @class = "form-check-input", @id = "done", @type = "checkbox" })
+                            <label class="form-check-label" for="done">Done</label>
+                        </div>
+                    </div>
+                </div>
+                @if (Model != null && Model.Error !="")
+                {
+                    <div class="alert alert-primary" role="alert">
+                        @Model.Error
+                    </div>
+                }
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        }
+
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    </div>
+</body>
+</html>

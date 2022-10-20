@@ -1,0 +1,58 @@
+﻿@using MVC.ViewModel
+@model HomeViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<script>
+    function deleteCategory() {
+        document.getElementById('isDeleted').value = true;
+    }
+</script>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>EditCategory</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        @using (Html.BeginForm())
+        {
+            <form>
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="form-group">
+                            @Html.TextBoxFor(model => model.Category.Id, new { @class = "form-control", @id = "id", @hidden = "true" })
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            @Html.TextBoxFor(model => model.Category.Name, new { @class = "form-control", @id = "name", @autocomplete = "off" })
+                        </div>
+                        <div class="form-group">
+                            @Html.TextBoxFor(model => model.Category.IsDeleted, new { @class = "form-control", @id = "isDeleted", @hidden = "true" })
+                        </div>
+                    </div>
+                </div>
+                @if (Model != null && Model.Error != "")
+                {
+                    <div class="alert alert-primary" role="alert">
+                        @Model.Error
+                    </div>
+                }
+                @if (Model != null && Model.TaskList.Count() == 0)
+                {
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary" onclick="deleteCategory()">Delete</button>
+                }
+            </form>
+        }
+
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    </div>
+</body>
+</html>
